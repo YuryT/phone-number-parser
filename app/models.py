@@ -31,5 +31,5 @@ class Company(object):
             elif mode == MODE_REGEX:
                 numbers_set.update(parse_by_regex(text))
             end_time = time.time()
-            print(f'{contact_page} parsed {end_time - start_time}')
+            print(f'{contact_page} parsing time: {end_time - start_time}')
         self.phone_numbers = list(numbers_set)

@@ -25,6 +25,7 @@ class DataSource:
 
     #  write data to db or post to api
     def save_updated_companies(self, companies: List[Company]):
+        print('Output:')
         for company in companies:
             print(company.name)
             print(company.phone_numbers)
