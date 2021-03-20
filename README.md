@@ -3,6 +3,6 @@
 ## Installation
    - Clone the repository
    - Install pipenv
-   - `pipenv install`
+   - `pipenv install --dev`
 ## Run
   `pipenv run  pytest --verbose --capture=no`
