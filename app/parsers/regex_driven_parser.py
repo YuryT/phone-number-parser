@@ -1,5 +1,5 @@
 import re
-
+from bs4 import BeautifulSoup
 # +7/8KKKNNNNNNN
 DIGITS_ONLY_REGEX = r'[87]\d{10}'
 # NNN-NN-NN
@@ -18,13 +18,33 @@ regex_string_for_results = '|'.join(REGEX_LIST)
 MOSCOW_CODE = 495
 
 
-def parse_by_regex(text):
+def get_text_bs(text):
+    tree = BeautifulSoup(text, 'lxml')
+
+    body = tree.body
+    if body is None:
+        return None
+
+    for tag in body.select('script'):
+        tag.decompose()
+    for tag in body.select('style'):
+        tag.decompose()
+
+    return body.get_text(separator=' ')
+
+
+def parse_by_regex(text, bs4=False):
     not_validated_numbers = set()
+    formatted_numbers = set()
+    if bs4:
+        text = get_text_bs(text)
+        #print(text)
+    if not text:
+        return formatted_numbers
     for match in re.findall(regex_string_for_html, text):
         not_validated_numbers.add(
             re.search(regex_string_for_results, match).group(),
         )
-    formatted_numbers = set()
     for number in not_validated_numbers:
         if re.search(DIGITS_ONLY_REGEX, number):
             formatted_numbers.add(f'8{number[1:]}')

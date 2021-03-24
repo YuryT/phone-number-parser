@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 requests = "*"
 phonenumbers="*"
+beautifulsoup4="*"
+lxml="*"
 
 [dev-packages]
 pytest = "*"

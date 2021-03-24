@@ -1,20 +1,18 @@
 from .DataSource import DataSource
 
 
-def refresh_contacts(mode):
-    ds = DataSource()
-    companies = ds.get_companies_to_refresh()
+def reload_contacts(ds):
+    companies = ds.get_companies_to_reload()
     refreshed_data = []
     for company in companies:
-        company.refresh_contacts(mode)
+        company.load_contact_pages()
         refreshed_data.append(company)
-    ds.save_updated_companies(refreshed_data)
 
 
-def validate_phone_numbers(phone_numbers_list):
-    for n in phone_numbers_list:
-        validate_phone_number(n)
-
-
-def validate_phone_number(number):
-    raise NotImplementedError()
+def parse_contacts(mode, ds):
+    companies = ds.get_companies_to_parse()
+    for c in companies:
+        numbers_set = set()
+        for page in c.contact_pages:
+            numbers_set.update(page.parse(mode))
+        c.phone_numbers = list(numbers_set)
